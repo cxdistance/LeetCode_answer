@@ -1,81 +1,81 @@
-#include<iostream>
-#include<string>
-#include<algorithm>
-#include<vector>
-#include<iterator>
-#include<limits>
+#include <iostream>
+#include <limits.h>
+#include <string>
 using namespace std;
-class Solution {
+class Solution
+{
 public:
-	int myAtoi(string str) {
-		string s = pre(str);
-		if (s.empty())
-			return 0;
-		int res;
-		flag ? res = s[0] - 48 : res = 48 - s[0];
-		if (flag)
-		{
-			for (int i = 1; i < s.size(); i++)
-			{
-				int pop = s[i] - 48;
-				if (res > INT_MAX / 10 || (res == INT_MAX / 10 && pop > 7))
-					return INT_MAX;
-				else
-					res = res * 10 + pop;
-			}
-		}
-		else
-		{
-			for (int i = 1; i < s.size(); i++)
-			{
-				int pop = 48 - s[i];
-				if (res < INT_MIN / 10 || (res == INT_MIN / 10 && pop < -8))
-					return INT_MIN;
-				else
-					res = res * 10 + pop;
-			}
-		}
-		return res;
-
-
-
-	}
-	string pre(string& s)
-	{
-		string res;
-		int pos = 0;
-		flag = false;
-		while (pos != s.size() && s[pos] == ' ')
-			pos++;
-		if (pos == s.size())
-			return "";
-		if (s[pos] == '+' || s[pos] == '-')
-			pos++;
-		if (s[pos]<'0' || s[pos]>'9')
-			return "";
-		if (pos > 0 && s[pos - 1] == '-')
-			flag = false;
-		else
-			flag = true;
-		for (int i = pos; i < s.size(); i++)
-		{
-			res.push_back(s[i]);
-			if (i == s.size() - 1 || s[i + 1]<'0' || s[i + 1]>'9')
-				break;
-		}
-		return res;
-	}
-	bool flag;
+    int flag;
+    int myAtoi(string str)
+    {
+        string res = preProcess(str);
+        if (res.empty())
+            return 0;
+        int pop = 0, num = 0;
+        for (int i = 0; i < res.size(); i++)
+        {
+            pop = flag ? (res[i] - 48) : (48 - res[i]);
+            if (flag && (num > INT_MAX / 10 || (num == INT_MAX / 10 && pop > 7)))
+                return INT_MAX;
+            if (!flag && (num < INT_MIN / 10 || (num == INT_MIN / 10 && pop < -8)))
+                return INT_MIN;
+            num = num * 10 + pop;
+        }
+        /*It can be faster if you write two loops*/
+        /*if (flag)
+        {
+            for (int i = 0; i < res.size(); i++)
+            {
+                pop = res[i] - 48;
+                if (num > INT_MAX / 10 || (num == INT_MAX / 10 && pop > 7))
+                    return INT_MAX;
+                num = num * 10 + pop;
+            }
+        }
+        else
+        {
+            for (int i = 0; i < res.size(); i++)
+            {
+                pop = 48 - res[i];
+                if (num < INT_MIN / 10 || (num == INT_MIN / 10 && pop < -8))
+                    return INT_MIN;
+                num = num * 10 + pop;
+            }
+        }*/
+        return num;
+    }
+    string preProcess(string &str)
+    {
+        int i = 0;
+        string res;
+        while (i < str.size() && str[i] == ' ')
+            i++;
+        if (i == str.size())
+            return "";
+        if (str[i] == '-' || str[i] == '+')
+            i++;
+        if (str[i] > '9' || str[i] < '0')       // may be like "  +-123"
+            return "";
+        if (i > 0 && str[i - 1] == '-')     
+            flag = false;
+        else
+            flag = true;
+        for (; i < str.size(); i++)
+        {
+            if (str[i] >= '0' && str[i] <= '9')
+                res.push_back(str[i]);
+            else
+                break;
+        }
+        return res;
+    }
 };
 int main()
 {
-	int a;
-	string s;
-	while (getline(cin, s))
-	{
-		Solution so;
-		cout << so.myAtoi(s) << endl;
-	}
-	return 0;
+    Solution so;
+    string str;
+    while (cin >> str)
+        cout << so.myAtoi(str);
+    system("pause");
+    return 0;
 }
-
