@@ -14,7 +14,3 @@
         return maxlen
 
 
-so = Solution()
-s = '2234'
-length = so.lengthOfLongestSubstring(s)
-print(length)
